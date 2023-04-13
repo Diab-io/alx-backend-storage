@@ -1,0 +1,2 @@
+// script that returns the records that match the parsed arg
+db.school.find({name:"Holberton school"})
