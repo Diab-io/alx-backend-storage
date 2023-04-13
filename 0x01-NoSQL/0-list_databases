@@ -1,2 +1,3 @@
-#!/usr/bin/bash
+// lists all databases prresent in mongodb 
+
 show dbs
