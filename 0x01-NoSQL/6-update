@@ -1,0 +1,2 @@
+// updates the doc with the specified name and adds a new attr
+db.school.update({name:"Holberton school"}, {$set:{address:"972 Mission street"}})
