@@ -1,2 +1,2 @@
 // removes/deletes any record with the name: Holberton school
-db.school.delete{name:"Holberton school"})
+db.school.delete({name:"Holberton school"})
