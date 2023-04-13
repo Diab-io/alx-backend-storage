@@ -1,0 +1,2 @@
+// script that creates a new database in mongodb
+use my_db
