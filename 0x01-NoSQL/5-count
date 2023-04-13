@@ -1,0 +1,2 @@
+// this fetches the docs in the collection and returns the number
+db.school.find().count()
