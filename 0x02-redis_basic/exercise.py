@@ -13,7 +13,7 @@ class Cache:
     def __init__(self) -> None:
         """ clears the db on every instance """
         self._redis = redis.Redis()
-        self._redis.flushdb()
+        self._redis.flushdb(True)
 
     def store(self, data: Union[int, str, bytes, float]) -> str:
         """
@@ -22,5 +22,5 @@ class Cache:
                 data - data that is to be added
         """
         generated_key = str(uuid.uuid4())
-        self._redis.set({generated_key: data})
+        self._redis.set(generated_key, data)
         return generated_key
