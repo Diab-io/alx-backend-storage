@@ -5,6 +5,7 @@ module containing a cache class
 
 import redis
 import uuid
+from typing import Union
 
 
 class Cache:
@@ -14,7 +15,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: str | int | bytes | float) -> str:
+    def store(self, data: Union[int, str, bytes, float]) -> str:
         """
             This metohod stores the data with the generated key
             args:
