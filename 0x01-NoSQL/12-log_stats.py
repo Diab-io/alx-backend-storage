@@ -1,40 +1,31 @@
 #!/usr/bin/env python3
-"""
-this module contains a Python script that provides some stats about Nginx logs
- stored in MongoDB
-Database: logs
-Collection: nginx
-Display (same as the example):
-first line: x logs where x is the number of documents in this collection
-second line: Methods:
-5 lines with the number of documents with the method = ["GET", "POST", "PUT",
- "PATCH", "DELETE"] in this order (see example below - warning: it’s a
- tabulation before each line)
-one line with the number of documents with:
-method=GET
-path=/status
-"""
-from pymongo import MongoClient
+# """
+#     this script is used to display the stats
+#     of some nginx logs
+#     database: logs
+#     collection: nginx
+# """
+
+# from pymongo import MongoClient
 
 
-def log_stats(mongo_collection):
-    """
-    this function provides some stats about Nginx logs stored in MongoDB
-    """
-    total_logs = mongo_collection.count_documents({})
-    print("{} logs".format(total_logs))
-    print("Methods:")
-    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-    for method in methods:
-        documents = mongo_collection.count_documents({"method": method})
-        print("\tmethod {}: {}".format(method, documents))
-    status = mongo_collection.count_documents({"method": "GET",
-                                              "path": "/status"})
-    print("{} status check".format(status))
+# def nginx_stats(mongo_collection):
+#     """
+#         :nginx_stats: provides the stats of the nginx logs
+#     """
+#     num_of_docs = mongo_collection.count_documents({})
+#     print(f"{num_of_docs} logs")
+#     print("Methods:")
+#     list_of_methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+#     for method in list_of_methods:
+#         print(f"\tmethod {method}: {mongo_collection.count_documents({'method': method})}")
+    
+#     status = mongo_collection.count_documents({'method': 'Get', 'path': '/status'})
+#     print(f"{status} status check")
 
 
-if __name__ == "__main__":
-    with MongoClient() as client:
-        db = client.logs
-        collection = db.nginx
-        log_stats(collection)
+# if __name__ == "__main__":
+#     client = MongoClient()
+#     db = client.logs
+#     collection = db.nginx
+#     nginx_stats(collection)
