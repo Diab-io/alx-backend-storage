@@ -21,5 +21,5 @@ class Cache:
                 data - data that is to be added
         """
         generated_key = str(uuid.uuid4())
-        self._redis.mset({generated_key: data})
+        self._redis.set({generated_key: data})
         return generated_key
