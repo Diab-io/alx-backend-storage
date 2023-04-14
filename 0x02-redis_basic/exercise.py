@@ -5,7 +5,8 @@ module containing a cache class
 
 import redis
 import uuid
-from typing import Union
+from typing import Union, Optional, Callable
+import sys
 
 
 class Cache:
@@ -24,3 +25,21 @@ class Cache:
         generated_key = str(uuid.uuid4())
         self._redis.set(generated_key, data)
         return generated_key
+    
+    def get(self, key: str, fn: Optional[Callable] = None):
+        """
+        This method gets the value of the passed key
+        and can be used in a callable func
+        """
+        if fn:
+            return fn(self._redis.get(key))
+        else:
+            return self._redis.get(key)
+    
+    def get_str(self, byte_data: bytes) -> str:
+        """ method that converts byte to string """
+        return byte_data.decode("utf-8")
+
+    def get_int(self, byte_data: bytes) -> int:
+        """ method that converts byte to int """
+        return int.from_bytes(byte_data, sys.byteorder)
