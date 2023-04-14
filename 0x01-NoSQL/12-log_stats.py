@@ -9,23 +9,23 @@
 from pymongo import MongoClient
 
 
-def nginx_stats(mongo_collection):
+def nginx_stats():
     """
         :nginx_stats: provides the stats of the nginx logs
     """
-    num_of_docs = mongo_collection.count().find()
+    client = MongoClient()
+    mongo_collection = client.logs.nginx
+
+    num_of_docs = mongo_collection.count_documents({})
     print(f"{num_of_docs} logs")
     print("Methods:")
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
-        print(f"\tmethod {method}: {mongo_collection.find({'method': method}).count()}")
+        print(f"\tmethod {method}: {mongo_collection.count_documents({'method': method})}")
     
-    status = mongo_collection.find({'method': 'Get', 'path': '/status'}).count()
+    status = mongo_collection.count_documents({'method': 'Get', 'path': '/status'})
     print(f"{status} status check")
 
 
 if __name__ == "__main__":
-    client = MongoClient()
-    db = client.logs
-    collection = db.nginx
-    nginx_stats(collection)
+    nginx_stats()
