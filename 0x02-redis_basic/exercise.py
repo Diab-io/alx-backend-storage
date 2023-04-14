@@ -25,7 +25,7 @@ class Cache:
         generated_key = str(uuid.uuid4())
         self._redis.set(generated_key, data)
         return generated_key
-    
+
     def get(self, key: str, fn: Optional[Callable] = None):
         """
         This method gets the value of the passed key
@@ -35,7 +35,7 @@ class Cache:
             return fn(self._redis.get(key))
         else:
             return self._redis.get(key)
-    
+
     def get_str(self, byte_data: bytes) -> str:
         """ method that converts byte to string """
         return byte_data.decode("utf-8")
