@@ -13,12 +13,12 @@ def nginx_stats(mongo_collection):
     """
         :nginx_stats: provides stats about logs of the nginx collection
     """
-    num_of_docs = mongo_collection.count().find()
+    num_of_docs = mongo_collection.count_documents({})
     print(f"{num_of_docs} logs")
     print("Methods:")
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
-        print(f"\tmethod {method}: {mongo_collection.find({'method': method}).count()}")
+        print(f"\tmethod {method}: {mongo_collection.count_documents({'method': method})}")
     
     status = mongo_collection.find({'method': 'Get', 'path': '/status'}).count()
     print(f"{status} status check")
