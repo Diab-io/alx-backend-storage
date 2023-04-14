@@ -18,9 +18,9 @@ def nginx_stats(mongo_collection):
     print("Methods:")
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
-        print(f"\tmethod {method}: {mongo_collection.count_documents({'method': method})}")
+        print(f'\tmethod {method}: {mongo_collection.count_documents({"method": method})}')
     
-    status = mongo_collection.find({'method': 'Get', 'path': '/status'}).count()
+    status = mongo_collection.count_documents({'method': 'Get', 'path': '/status'})
     print(f"{status} status check")
 
 
