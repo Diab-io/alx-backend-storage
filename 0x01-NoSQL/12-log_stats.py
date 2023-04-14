@@ -1,24 +1,40 @@
 #!/usr/bin/env python3
-"""This script that provides some stats about Nginx logs stored in MongoDB"""
-
+"""
+this module contains a Python script that provides some stats about Nginx logs
+ stored in MongoDB
+Database: logs
+Collection: nginx
+Display (same as the example):
+first line: x logs where x is the number of documents in this collection
+second line: Methods:
+5 lines with the number of documents with the method = ["GET", "POST", "PUT",
+ "PATCH", "DELETE"] in this order (see example below - warning: it’s a
+ tabulation before each line)
+one line with the number of documents with:
+method=GET
+path=/status
+"""
 from pymongo import MongoClient
 
 
-def nginx_stats_check():
-    """ provides some stats about Nginx logs stored in MongoDB:"""
-    client = MongoClient()
-    collec_nginx = client.logs.nginx
-
-    num_of_docs = collec_nginx.count_documents({})
-    print("{} logs".format(num_of_docs))
+def log_stats(mongo_collection):
+    """
+    this function provides some stats about Nginx logs stored in MongoDB
+    """
+    total_logs = mongo_collection.count_documents({})
+    print("{} logs".format(total_logs))
     print("Methods:")
-    methods_list = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-    for method in methods_list:
-        method_count = collec_nginx.count_documents({"method": method})
-        print("\tmethod {}: {}".format(method, method_count))
-    status = collec_nginx.count_documents({"method": "GET", "path": "/status"})
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        documents = mongo_collection.count_documents({"method": method})
+        print("\tmethod {}: {}".format(method, documents))
+    status = mongo_collection.count_documents({"method": "GET",
+                                              "path": "/status"})
     print("{} status check".format(status))
 
 
 if __name__ == "__main__":
-    nginx_stats_check()
+    with MongoClient() as client:
+        db = client.logs
+        collection = db.nginx
+        log_stats(collection)
