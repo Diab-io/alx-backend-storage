@@ -42,6 +42,25 @@ def call_history(method: Callable) -> Callable:
     return history_recorder
 
 
+def replay(method: Callable) -> None:
+    """
+        This function displays an highlight of everything
+        that happened when the Cache.store method is called
+        and prints it out
+    """
+    key = method.__qualname__
+    input_key = f"{method.__qualname__}:inputs"
+    output_key = f"{method.__qualname__}:outputs"
+    times_called = method.__self__._redis.get(key).decode("utf-8")
+    print(f"{key} was called {times_called} times")
+    input_range = method.__self__._redis.lrange(input_key, 0, -1)
+    output_range = method.__self__._redis.lrange(output_key, 0, -1)
+    for i, k in list(zip(input_range, output_range)):
+        input = i.decode("utf-8")
+        output_id = k.decode("utf-8")
+        print(f"{key}(*{input}) -> {output_id}")
+
+
 class Cache:
     """ class that stores data into the redis mem """
     def __init__(self) -> None:
