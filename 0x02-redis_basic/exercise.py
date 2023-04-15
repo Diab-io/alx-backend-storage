@@ -49,16 +49,16 @@ def replay(method: Callable) -> None:
         and prints it out
     """
     key = method.__qualname__
+    redis_server = method.__self__._redis
     input_key = f"{method.__qualname__}:inputs"
     output_key = f"{method.__qualname__}:outputs"
-    times_called = method.__self__._redis.get(key).decode("utf-8")
+    times_called = redis_server.get(key).decode("utf-8")
     print(f"{key} was called {times_called} times")
-    input_range = method.__self__._redis.lrange(input_key, 0, -1)
-    output_range = method.__self__._redis.lrange(output_key, 0, -1)
+    input_range = redis_server.lrange(input_key, 0, -1)
+    output_range = redis_server.lrange(output_key, 0, -1)
     for i, k in list(zip(input_range, output_range)):
-        input = i.decode("utf-8")
-        output_id = k.decode("utf-8")
-        print(f"{key}(*{input}) -> {output_id}")
+        input_val, output_id = i.decode("utf-8"), k.decode("utf-8")
+        print(f"{key}(*{input_val}) -> {output_id}")
 
 
 class Cache:
